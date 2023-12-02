@@ -62,9 +62,8 @@
                         <td><c:out value="${item.ID_Proveedor}" /></td>
                         <td><c:out value="${item.nombreProveedor}" /></td>                     
                         <td><c:out value="${item.telefonoProveedor}" /></td>
-                        <td><c:out value="${item.ID_Direccion}" /></td>
+                        <!--<td><c:out value="${item.ID_Direccion}" /></td>-->
                         <td><c:out value="${item.direccionCompleta}" /></td>
-
                         <td>
                             <!-- Ver detalles -->
                             <button class="open-popup-btn" 
@@ -109,7 +108,16 @@
                     </tr>
                 </c:forEach>
             </tbody>            
-        </table>      
+        </table> 
+                 <!-- Botón de regreso -->
+            <button onclick="regresar()">Regresar</button>
+            <!-- JavaScript al final de la página -->
+            <script>
+                function regresar() {
+                    // Utiliza window.history para retroceder una página en el historial del navegador
+                    window.history.back();
+                }
+            </script>   
     </body>
     <script>
         function abrirPopup() {

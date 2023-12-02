@@ -29,7 +29,9 @@
 
                 <input type="submit" value="Modificar" onclick="return confirm('¿Desea modificar el proveedor?')" /><br><br> 
             </div>
-            <!-- Botón de regreso -->
+         
+        </form>
+                            <!-- Botón de regreso -->
             <button onclick="regresar()">Regresar</button>
             <!-- JavaScript al final de la página -->
             <script>
@@ -37,7 +39,6 @@
                     // Utiliza window.history para retroceder una página en el historial del navegador
                     window.history.back();
                 }
-            </script>            
-        </form>
+            </script>   
     </body>
 </html>

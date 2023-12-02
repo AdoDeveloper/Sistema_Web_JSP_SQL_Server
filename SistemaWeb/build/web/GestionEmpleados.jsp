@@ -137,7 +137,16 @@
                     </tr>
                 </c:forEach>
             </tbody>            
-        </table>      
+        </table>    
+                    <!-- Botón de regreso -->
+            <button onclick="regresar()">Regresar</button>
+            <!-- JavaScript al final de la página -->
+            <script>
+                function regresar() {
+                    // Utiliza window.history para retroceder una página en el historial del navegador
+                    window.history.back();
+                }
+            </script>   
     </body>
     <script>
         function abrirPopup() {
