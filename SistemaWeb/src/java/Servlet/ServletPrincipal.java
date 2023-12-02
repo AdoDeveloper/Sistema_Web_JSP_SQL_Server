@@ -39,7 +39,7 @@ import java.util.logging.Logger;
 public class ServletPrincipal extends HttpServlet {
 
     private final String usuario = "sa";
-    private final String contrasenia = "12345678";
+    private final String contrasenia = "root";
     private final String servidor = "localhost:1433";
     private final String bd = "Supermercado";
 
@@ -1092,134 +1092,198 @@ public class ServletPrincipal extends HttpServlet {
 
     //Agregar Pedidos
     public void agregarPedido(HttpServletRequest request, HttpServletResponse response) {
-        //CAPTURA DE VARIABLES
-        //El ID de los pedidos es autoincrementable
-        String fechaPedido = request.getParameter("fechaPedido");
-        String monto = request.getParameter("monto");
-        String ID_Proveedor = request.getParameter("ID_Proveedor");
-        String nombreProveedor = request.getParameter("nombreProveedor");
-        String telefonoProveedor = request.getParameter("telefonoProveedor");
-        String ID_Direccion = request.getParameter("ID_Direccion");
-        String direccionCompleta = request.getParameter("direccionCompleta");
-        String ID_DetallePedido = request.getParameter("ID_DetallePedido");
-        String cantidad = request.getParameter("cantidad");
-        String ID_Producto = request.getParameter("ID_Producto");
-        String nombreProducto = request.getParameter("nombreProducto");
-        String descripcion = request.getParameter("descripcion");
-        String existencia = request.getParameter("existencia");
-        String precioUnitario = request.getParameter("precioUnitario");
+    String fechaPedido = request.getParameter("fechaPedido");
+    double monto = Double.parseDouble(request.getParameter("monto"));
+    int cantidad = Integer.parseInt(request.getParameter("cantidad"));
+    int idProducto = Integer.parseInt(request.getParameter("ID_Producto"));
+    int idProveedor = Integer.parseInt(request.getParameter("ID_Proveedor"));
 
-        try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            try (Connection conn = DriverManager.getConnection(url)) {
-                request.setAttribute("mensaje_conexion", "Ok!");
-                String sql = "insert into Pedidos values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                PreparedStatement pstmt = conn.prepareStatement(sql);
-                pstmt.setString(1, fechaPedido);
-                pstmt.setString(2, monto);
-                pstmt.setString(3, ID_Proveedor);
-                pstmt.setString(4, nombreProveedor);
-                pstmt.setString(5, telefonoProveedor);
-                pstmt.setString(6, ID_Direccion);
-                pstmt.setString(7, direccionCompleta);
-                pstmt.setString(8, ID_DetallePedido);
-                pstmt.setString(9, cantidad);
-                pstmt.setString(10, ID_Producto);
-                pstmt.setString(11, nombreProducto);
-                pstmt.setString(12, descripcion);
-                pstmt.setString(13, existencia);
-                pstmt.setString(14, precioUnitario);
-                int registros = pstmt.executeUpdate();
-                if (registros > 0) {
-                    request.getSession().setAttribute("exito", true);
-                } else {
-                    request.getSession().setAttribute("exito", false);
-                }
+    Connection conn = null;
+    PreparedStatement pstmtPedido = null;
+    PreparedStatement pstmtDetallePedido = null;
+
+    try {
+        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+
+        conn = DriverManager.getConnection(url);
+        conn.setAutoCommit(false);
+
+        // Insertar en la tabla Pedidos
+        String sqlPedido = "INSERT INTO Pedidos (FechaPedido, Monto, ID_Proveedor) VALUES (?, ?, ?)";
+        pstmtPedido = conn.prepareStatement(sqlPedido, PreparedStatement.RETURN_GENERATED_KEYS);
+        pstmtPedido.setString(1, fechaPedido);
+        pstmtPedido.setDouble(2, monto);
+        pstmtPedido.setInt(3, idProveedor);
+        pstmtPedido.executeUpdate();
+
+        // Obtener el ID_Pedido generado
+        try (ResultSet generatedKeys = pstmtPedido.getGeneratedKeys()) {
+            if (generatedKeys.next()) {
+                int idPedido = generatedKeys.getInt(1);
+
+                // Insertar en la tabla Detalle_Pedidos
+                String sqlDetallePedido = "INSERT INTO Detalle_Pedidos (Cantidad, ID_Pedido, ID_Producto) VALUES (?, ?, ?)";
+                pstmtDetallePedido = conn.prepareStatement(sqlDetallePedido);
+                pstmtDetallePedido.setInt(1, cantidad);
+                pstmtDetallePedido.setInt(2, idPedido);
+                pstmtDetallePedido.setInt(3, idProducto);
+                pstmtDetallePedido.executeUpdate();
+
+                conn.commit();
+                request.getSession().setAttribute("exito", true);
+            } else {
+                request.getSession().setAttribute("exito", false);
             }
-        } catch (SQLException | ClassNotFoundException ex) {
-            request.getSession().setAttribute("exito", false);
+        }
+    } catch (ClassNotFoundException | SQLException e) {
+        e.printStackTrace();
+        try {
+            if (conn != null) {
+                conn.rollback();
+            }
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
+    } finally {
+        try {
+            if (pstmtPedido != null) {
+                pstmtPedido.close();
+            }
+            if (pstmtDetallePedido != null) {
+                pstmtDetallePedido.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+}
+
 
     //ModificarPedido
-    //Funciones de actualizacion de registros (UPDATE)
     public void modificarPedido(HttpServletRequest request, HttpServletResponse response) {
-        //CAPTURA DE VARIABLES
-        String ID_Pedido = request.getParameter("ID_Pedido");
-        String fechaPedido = request.getParameter("fechaPedido");
-        String monto = request.getParameter("monto");
-        String ID_Proveedor = request.getParameter("ID_Proveedor");
-        String nombreProveedor = request.getParameter("nombreProveedor");
-        String telefonoProveedor = request.getParameter("telefonoProveedor");
-        String ID_Direccion = request.getParameter("ID_Direccion");
-        String direccionCompleta = request.getParameter("direccionCompleta");
-        String ID_DetallePedido = request.getParameter("ID_DetallePedido");
-        String cantidad = request.getParameter("cantidad");
-        String ID_Producto = request.getParameter("ID_Producto");
-        String nombreProducto = request.getParameter("nombreProducto");
-        String descripcion = request.getParameter("descripcion");
-        String existencia = request.getParameter("existencia");
-        String precioUnitario = request.getParameter("precioUnitario");
+    int idPedido = Integer.parseInt(request.getParameter("ID_Pedido"));
+    String fechaPedido = request.getParameter("fechaPedido");
+    double monto = Double.parseDouble(request.getParameter("monto"));
+    int cantidad = Integer.parseInt(request.getParameter("cantidad"));
+    int idProducto = Integer.parseInt(request.getParameter("ID_Producto"));
+    int idProveedor = Integer.parseInt(request.getParameter("ID_Proveedor"));
+    int idDetallePedido = Integer.parseInt(request.getParameter("ID_DetallePedido"));
 
+    Connection conn = null;
+    PreparedStatement pstmtPedido = null;
+    PreparedStatement pstmtDetallePedido = null;
+
+    try {
+        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+
+        conn = DriverManager.getConnection(url);
+        conn.setAutoCommit(false);
+
+        // Actualizar la tabla Pedidos
+        String updatePedido = "UPDATE Pedidos SET FechaPedido = ?, Monto = ?, ID_Proveedor = ? WHERE ID_Pedido = ?";
+        pstmtPedido = conn.prepareStatement(updatePedido);
+        pstmtPedido.setString(1, fechaPedido);
+        pstmtPedido.setDouble(2, monto);
+        pstmtPedido.setInt(3, idProveedor);
+        pstmtPedido.setInt(4, idPedido);
+        pstmtPedido.executeUpdate();
+
+        // Actualizar la tabla Detalle_Pedidos
+        String updateDetallePedido = "UPDATE Detalle_Pedidos SET Cantidad = ?, ID_Producto = ? WHERE ID_Detalle_Pedido = ?";
+        pstmtDetallePedido = conn.prepareStatement(updateDetallePedido);
+        pstmtDetallePedido.setInt(1, cantidad);
+        pstmtDetallePedido.setInt(2, idProducto);
+        pstmtDetallePedido.setInt(3, idDetallePedido);
+        pstmtDetallePedido.executeUpdate();
+
+        conn.commit();
+        request.getSession().setAttribute("exito", true);
+
+    } catch (ClassNotFoundException | SQLException e) {
+        e.printStackTrace();
         try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            try (Connection conn = DriverManager.getConnection(url)) {
-                request.setAttribute("mensaje_conexion", "Ok!");
-
-                String sql = "UPDATE Pedido SET "
-                        + "ID_Pedido='" + ID_Pedido + "', "
-                        + "fechaPedido='" + fechaPedido + "', "
-                        + "monto='" + monto + "', "
-                        + "ID_Proveedor='" + ID_Proveedor + "', "
-                        + "nombreProveedor='" + nombreProveedor + "', "
-                        + "telefonoProveedor='" + telefonoProveedor + "', "
-                        + "ID_Direccion='" + ID_Direccion + "', "
-                        + "direccionCompleta='" + direccionCompleta + "', "
-                        + "ID_DetallePedido='" + ID_DetallePedido + "', "
-                        + "cantidad='" + cantidad + "', "
-                        + "ID_Producto='" + ID_Producto + "', "
-                        + "nombreProducto='" + nombreProducto + "', "
-                        + "descripcion='" + descripcion + "', "
-                        + "existencia='" + existencia + "', "
-                        + "precioUnitario='" + precioUnitario + "' ";
-
-                PreparedStatement pstmt = conn.prepareStatement(sql);
-                int registros = pstmt.executeUpdate();
-                if (registros > 0) {
-                    request.getSession().setAttribute("exito", true);
-                } else {
-                    request.getSession().setAttribute("exito", false);
-                }
+            if (conn != null) {
+                conn.rollback();
             }
-        } catch (SQLException | ClassNotFoundException ex) {
-            request.getSession().setAttribute("exito", false);
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
+    } finally {
+        try {
+            if (pstmtPedido != null) {
+                pstmtPedido.close();
+            }
+            if (pstmtDetallePedido != null) {
+                pstmtDetallePedido.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+}
+
 
     //EliminarPedido
-    //Funciones de eliminacion de registros (DELETE)
     public void eliminarPedido(HttpServletRequest request, HttpServletResponse response) {
-        String ID_Pedido = request.getParameter("ID_Pedido");
+    int idPedido = Integer.parseInt(request.getParameter("ID_Pedido"));
+
+    Connection conn = null;
+    PreparedStatement pstmtPedido = null;
+    PreparedStatement pstmtDetallePedido = null;
+
+    try {
+        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+
+        conn = DriverManager.getConnection(url);
+        conn.setAutoCommit(false);
+
+        // Eliminar de la tabla Detalle_Pedidos
+        String deleteDetallePedido = "DELETE FROM Detalle_Pedidos WHERE ID_Detalle_Pedido = ?";
+        pstmtDetallePedido = conn.prepareStatement(deleteDetallePedido);
+        pstmtDetallePedido.setInt(1, idPedido);
+        pstmtDetallePedido.executeUpdate();
+
+        // Eliminar de la tabla Pedidos
+        String deletePedido = "DELETE FROM Pedidos WHERE ID_Pedido = ?";
+        pstmtPedido = conn.prepareStatement(deletePedido);
+        pstmtPedido.setInt(1, idPedido);
+        pstmtPedido.executeUpdate();
+
+        conn.commit();
+        request.getSession().setAttribute("exito", true);
+
+    } catch (ClassNotFoundException | SQLException e) {
+        e.printStackTrace();
         try {
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            try (Connection conn = DriverManager.getConnection(url)) {
-                request.setAttribute("mensaje_conexion", "Ok!");
-                String sql = "delete from Pedidos where ID_Pedido='" + ID_Pedido + "'";
-                PreparedStatement pstmt = conn.prepareStatement(sql);
-                int registros = pstmt.executeUpdate();
-                if (registros > 0) {
-                    request.getSession().setAttribute("exito", true);
-                } else {
-                    request.getSession().setAttribute("exito", false);
-                }
+            if (conn != null) {
+                conn.rollback();
             }
-        } catch (SQLException | ClassNotFoundException ex) {
-            request.getSession().setAttribute("exito", false);
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
+    } finally {
+        try {
+            if (pstmtPedido != null) {
+                pstmtPedido.close();
+            }
+            if (pstmtDetallePedido != null) {
+                pstmtDetallePedido.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+}
+
 
     //MOSTRAR PEDIDO
     public void mostrarPedido(HttpServletRequest request, HttpServletResponse response) {
@@ -1428,7 +1492,6 @@ public class ServletPrincipal extends HttpServlet {
         } else if (accion.equals("RegistroPedidos")) {
             mostrarProveedor(request, response);
             mostrarProductos(request, response);
-            mostrarDirecciones(request, response);
             if (request.getSession().getAttribute("exito") != null) {
                 request.setAttribute("exito", request.getSession().getAttribute("exito"));
                 request.getSession().removeAttribute("exito");
@@ -1621,6 +1684,12 @@ public class ServletPrincipal extends HttpServlet {
             eliminarVenta(request, response);
             System.out.print("pasa al llamado");
             response.sendRedirect(request.getContextPath() + "/ServletPrincipal?accion=GestionVentas");
+        } else if (accion.equals("RegistroPedido")){
+            System.out.print("entra al metodo");
+            agregarPedido(request, response);
+            System.out.print("pasa al llamado");
+            response.sendRedirect(request.getContextPath() + "/ServletPrincipal?accion=GestionPedidos");
+ 
         }
     }
 

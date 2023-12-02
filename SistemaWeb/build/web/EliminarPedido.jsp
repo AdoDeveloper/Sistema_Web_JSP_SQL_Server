@@ -13,7 +13,7 @@
     </head>
     <body>
         <h1>Eliminar pedido</h1>
-        <form method="POST" action="/SistemaWeb/ServletPrincipal?accion=EliminarEmpleado">
+        <form method="POST" action="/SistemaWeb/ServletPrincipal?accion=EliminarPedido">
             <div>
                 <label>ID Pedido: ${param.ID_Pedido}</label><br>
                 <label>Fecha Pedido: ${param.fechaPedido}</label><br>
