@@ -134,11 +134,29 @@ Author     : Kevin Aparicio
                     </tr>
                 </c:forEach>
             </tbody>            
+<<<<<<< HEAD
         </table> 
         <script>
             function abrirPopup() {
                 var popup = document.getElementById('popup');
                 var overlay = document.getElementById('overlay');
+=======
+        </table>    
+                    <!-- Botón de regreso -->
+            <button onclick="regresar()">Regresar</button>
+            <!-- JavaScript al final de la página -->
+            <script>
+                function regresar() {
+                    // Utiliza window.history para retroceder una página en el historial del navegador
+                    window.history.back();
+                }
+            </script>   
+    </body>
+    <script>
+        function abrirPopup() {
+            var popup = document.getElementById('popup');
+            var overlay = document.getElementById('overlay');
+>>>>>>> fe823a4b2765e432939ff7989782ca0dc7fa6d68
 
                 if (popup.style.display === 'block') {
                     popup.style.display = 'none';

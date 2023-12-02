@@ -100,6 +100,7 @@
                 </c:forEach>
             </tbody>
         </table>
+<<<<<<< HEAD
 
         <div class="overlay" id="overlay"></div>
         <div class="popup-container" id="popup">
@@ -144,5 +145,16 @@
                     abrirPopup();
                 }
         </script>
+=======
+                 <!-- Botón de regreso -->
+            <button onclick="regresar()">Regresar</button>
+            <!-- JavaScript al final de la página -->
+            <script>
+                function regresar() {
+                    // Utiliza window.history para retroceder una página en el historial del navegador
+                    window.history.back();
+                }
+            </script>   
+>>>>>>> fe823a4b2765e432939ff7989782ca0dc7fa6d68
     </body>
 </html>

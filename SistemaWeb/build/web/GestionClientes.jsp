@@ -137,6 +137,7 @@
                         var popup = document.getElementById('popup');
                         var overlay = document.getElementById('overlay');
 
+<<<<<<< HEAD
                         if (popup.style.display === 'block') {
                             popup.style.display = 'none';
                             overlay.style.display = 'none';
@@ -162,3 +163,20 @@
     </body>
 
 </html>
+=======
+            // Muestra el pop-up
+            abrirPopup();
+        }
+    </script>
+                <!-- Botón de regreso -->
+            <button onclick="regresar()">Regresar</button>
+            <!-- JavaScript al final de la página -->
+            <script>
+                function regresar() {
+                    // Utiliza window.history para retroceder una página en el historial del navegador
+                    window.history.back();
+                }
+            </script>   
+</body>
+</html>
+>>>>>>> fe823a4b2765e432939ff7989782ca0dc7fa6d68

@@ -18,6 +18,7 @@
             padding: 20px;
         }
 
+<<<<<<< HEAD
         .form-container {
             max-width: 500px;
             margin: auto;
@@ -90,5 +91,33 @@
     <!-- Enlace a Bootstrap JS y Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
+=======
+        <form method="POST" action="/SistemaWeb/ServletPrincipal?accion=EliminarEmpleado">
+            <div>
+                <label>ID Empleado: ${param.ID_Empleado}</label><br>
+                <label>DUI: ${param.DUI_Empleado}</label><br>
+                <label>Número de afiliado ISSS: ${param.ISSS_Empleado}</label><br>
+                <label>Nombres: ${param.nombresEmpleado}</label><br>
+                <label>Apellidos: ${param.apellidosEmpleado}</label><br>
+                <label>Fecha de nacimiento: ${param.fechaNacEmpleado}</label><br>
+                <label>Teléfono: ${param.telefono}</label><br>
+                <label>Correo: ${param.correo}</label><br>
+                <label>Cargo: ${param.cargo}</label><br>
+                <label>Dirección: ${param.direccionCompleta}</label>   
+                <input type="hidden" name="ID_Empleado" id="ID_Empleado" value="${param.ID_Empleado}" /><br><br>
+                <input type="submit" value="Eliminar" onclick="return confirm('¿Desea eliminar el empleado?')" /><br><br>
+            </div>         
+        </form>
+                            <!-- Botón de regreso -->
+            <button onclick="regresar()">Regresar</button>
+            <!-- JavaScript al final de la página -->
+            <script>
+                function regresar() {
+                    // Utiliza window.history para retroceder una página en el historial del navegador
+                    window.history.back();
+                }
+            </script>   
+    </body>
+>>>>>>> fe823a4b2765e432939ff7989782ca0dc7fa6d68
 </html>
 

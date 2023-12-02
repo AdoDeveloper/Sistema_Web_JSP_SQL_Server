@@ -45,9 +45,16 @@
         <br>
         <input type="submit" value="Registrar" onclick="return confirm('¿Desea registrar el cliente?')" />
         <input type="button" value="Limpiar" onclick="limpiarFormulario()" />
-        <button type="button" onclick="location.href = '/SistemaWeb/?accion=GestionClientes'">Gestionar clientes</button> 
-    </form>
-
+       </form>
+            <!-- Botón de regreso -->
+    <button onclick="regresar()">Regresar</button>
+    <!-- JavaScript al final de la página -->
+    <script>
+        function regresar() {
+        // Utiliza window.history para retroceder una página en el historial del navegador
+        window.history.back();
+        }
+    </script>
     <!-- Agregar el script necesario para las funciones adicionales -->
     <script>
         function limpiarFormulario() {

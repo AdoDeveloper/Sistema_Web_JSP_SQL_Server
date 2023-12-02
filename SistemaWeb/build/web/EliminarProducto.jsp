@@ -62,6 +62,7 @@
                 <label>Nombre Proveedor: ${param.nombreProveedor}</label><br>
                 <label>Telefono Proveedor: ${param.telefonoProveedor}</label><br>  
                 <input type="hidden" name="ID_Producto" id="ID_Producto" value="${param.ID_Producto}" /><br><br>
+<<<<<<< HEAD
                 <input type="submit" class="btn btn-danger" value="Eliminar" onclick="return confirm('¿Desea eliminar este Producto?')" /><br><br>
             </div>
             <div>
@@ -85,6 +86,20 @@
                         }
                     }
         </script>
+=======
+                <input type="submit" value="Eliminar" onclick="return confirm('¿Desea eliminar este Producto?')" /><br><br>
+            </div>           
+        </form>
+                            <!-- Botón de regreso -->
+            <button onclick="regresar()">Regresar</button>
+            <!-- JavaScript al final de la página -->
+            <script>
+                function regresar() {
+                    // Utiliza window.history para retroceder una página en el historial del navegador
+                    window.history.back();
+                }
+            </script>   
+>>>>>>> fe823a4b2765e432939ff7989782ca0dc7fa6d68
     </body>
 </html>
     

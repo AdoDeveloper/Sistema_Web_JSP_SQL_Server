@@ -69,6 +69,7 @@
                 <input type="text" name="Telefono_Proveedor" id="Telefono_Proveedor" value="${param.telefonoProveedor}" required /><br><br>           
                 <input type="submit" class="btn btn-warning" value="Modificar" onclick="return confirm('¿Desea modificar el producto?')" /><br><br> 
             </div>
+<<<<<<< HEAD
             <div>
                 <a href="/SistemaWeb/?accion=GestionProductos" class="btn btn-secondary">Regresar</a><br><br>
             </div>             
@@ -90,5 +91,18 @@
                         }
                     }
         </script>
+=======
+           
+        </form>
+                            <!-- Botón de regreso -->
+    <button onclick="regresar()">Regresar</button>
+    <!-- JavaScript al final de la página -->
+    <script>
+        function regresar() {
+        // Utiliza window.history para retroceder una página en el historial del navegador
+        window.history.back();
+        }
+    </script>
+>>>>>>> fe823a4b2765e432939ff7989782ca0dc7fa6d68
     </body>
 </html>
