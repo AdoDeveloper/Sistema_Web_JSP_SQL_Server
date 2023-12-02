@@ -142,19 +142,16 @@
     <!-- Formulario para enviar información a EliminarFactura.jsp -->
     <form method="post" action="/SistemaWeb/EliminarFactura.jsp" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta factura?');">
         <!-- Campos ocultos con la información a enviar -->
-        <input type="hidden" name="idVentaEliminar" value="${detallesFactura.id_venta}" />
-        <input type="hidden" name="idClienteEliminar" value="${detallesFactura.ID_Cliente}" />
-        <input type="hidden" name="idProductoEliminar" value="${detallesFactura.ID_Producto}" />
-        <input type="hidden" name="nombresClienteEliminar" value="${detallesFactura.nombres}" />
-        <input type="hidden" name="apellidosClienteEliminar" value="${detallesFactura.apellidos}" />
-        <input type="hidden" name="duiClienteEliminar" value="${detallesFactura.dui}" />
-        <input type="hidden" name="fechaNacClienteEliminar" value="${detallesFactura.fechaNac}" />
-        <input type="hidden" name="emailClienteEliminar" value="${detallesFactura.email}" />
-        <input type="hidden" name="ivaEliminar" value="${detallesFactura.iva}" />
-        <input type="hidden" name="descuentoEliminar" value="${detallesFactura.descuento}" />
-        <input type="hidden" name="subTotalEliminar" value="${detallesFactura.subTotal}" />
-        <input type="hidden" name="totalEliminar" value="${detallesFactura.total}" />
-        <input type="hidden" name="nitEliminar" value="${detallesFactura.nit}" />
+        <input type="hidden" name="id_venta" value="${detallesFactura.id_venta}" />
+        <input type="hidden" name="ID_Producto" value="${detallesFactura.ID_Producto}" />
+        <input type="hidden" name="fechaVenta" value="${detallesFactura.fechaVenta}" />
+        <input type="hidden" name="cantidadProducto" value="${detallesFactura.cantidadProducto}" />
+        <input type="hidden" name="iva" value="${detallesFactura.iva}" />
+        <input type="hidden" name="descuento" value="${detallesFactura.descuento}" />
+        <input type="hidden" name="subTotal" value="${detallesFactura.subTotal}" />
+        <input type="hidden" name="total" value="${detallesFactura.total}" />
+        <input type="hidden" name="nit" value="${detallesFactura.nit}" />
+        <input type="hidden" name="ID_Cliente" value="${detallesFactura.ID_Cliente}" />
 
         <input type="submit" value="Eliminar" />
     </form>
