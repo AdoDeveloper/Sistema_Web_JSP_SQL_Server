@@ -7,72 +7,96 @@
 <head>
     <meta charset="UTF-8">
     <title>Modificar Factura</title>
-    <!-- Aquí puedes incluir tus estilos, enlaces a hojas de estilo, scripts, etc. -->
+    <!-- Enlaces a Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- Tus estilos personalizados pueden ir aquí -->
 </head>
 
 <body>
-    <div class="container">
-        <h2>Modificar Factura</h2>
+    <div class="container mt-5">
+        <h2 class="mb-4">Modificar Factura</h2>
         <c:if test="${exito != null}">
             <c:if test="${exito}">
-                <p><strong style="color: darkgreen;">La información se modificó correctamente</strong></p>
+                <p class="alert alert-success"><strong>La información se modificó correctamente</strong></p>
             </c:if>
             <c:if test="${!exito}">
-                <p><strong style="color: red;">No se modificó la información</strong></p>
+                <p class="alert alert-danger"><strong>No se modificó la información</strong></p>
             </c:if>
         </c:if>
 
-        <h1>Detalles de la Factura</h1>
+        <h1 class="mb-3">Detalles de la Factura</h1>
 
         <!-- Formulario para modificar la factura -->
         <form method="POST" action="/SistemaWeb/ServletPrincipal?accion=ModificarFactura">
-            <!-- Campo oculto para el ID de la venta -->
-            <input type="hidden" id="id_venta" name="id_venta" value="${param.id_venta}" required>
-             <!-- Campo oculto para la fecha de venta -->
-             <label>Fecha Venta:</label>
-             <input type="date" id="fechaVenta" name="fechaVenta" value="${param.fechaVenta}" required><br>
+            <div class="mb-3">
+                <!-- Campo para la fecha de venta -->
+                <label for="fechaVenta" class="form-label">Fecha de Venta:</label>
+                <input type="date" class="form-control" id="fechaVenta" name="fechaVenta" value="${param.fechaVenta}" required>
+            </div>
 
-            <!-- Campos del formulario para modificar la factura -->
-            <label for="ID_Producto">ID Producto:</label>
-            <input type="number" id="ID_Producto" name="ID_Producto" value="${param.ID_Producto}" required><br>
+            <div class="mb-3">
+                <!-- Campo para el ID del Producto -->
+                <label for="ID_Producto" class="form-label">ID Producto:</label>
+                <input type="number" class="form-control" id="ID_Producto" name="ID_Producto" value="${param.ID_Producto}" required>
+            </div>
 
-            <label for="cantidadProducto">Cantidad de Producto:</label>
-            <input type="number" id="cantidadProducto" name="cantidadProducto" value="${param.cantidadProducto}" required><br>
+            <div class="mb-3">
+                <!-- Campo para la cantidad de producto -->
+                <label for="cantidadProducto" class="form-label">Cantidad de Producto:</label>
+                <input type="number" class="form-control" id="cantidadProducto" name="cantidadProducto" value="${param.cantidadProducto}" required>
+            </div>
 
-            <!-- Campos adicionales para Facturas -->
-            <label for="iva">IVA:</label>
-            <input type="number" id="iva" name="iva" step="0.01" value="${param.iva}" required><br>
+            <div class="mb-3">
+                <!-- Campo para el IVA -->
+                <label for="iva" class="form-label">IVA:</label>
+                <input type="number" class="form-control" id="iva" name="iva" step="0.01" value="${param.iva}" required>
+            </div>
 
-            <label for="descuento">Descuento:</label>
-            <input type="number" id="descuento" name="descuento" step="0.01" value="${param.descuento}" required><br>
+            <div class="mb-3">
+                <!-- Campo para el descuento -->
+                <label for="descuento" class="form-label">Descuento:</label>
+                <input type="number" class="form-control" id="descuento" name="descuento" step="0.01" value="${param.descuento}" required>
+            </div>
 
             <!-- Campos calculados automáticamente -->
-            <label for="subtotal">Subtotal:</label>
-            <input type="text" id="subtotal" name="subtotal" value="${param.subTotal}" readonly><br>
+            <div class="mb-3">
+                <label for="subtotal" class="form-label">Subtotal:</label>
+                <input type="text" class="form-control" id="subtotal" name="subtotal" value="${param.subTotal}" readonly>
+            </div>
 
-            <label for="total">Total:</label>
-            <input type="text" id="total" name="total" value="${param.total}" readonly><br>
+            <div class="mb-3">
+                <label for="total" class="form-label">Total:</label>
+                <input type="text" class="form-control" id="total" name="total" value="${param.total}" readonly>
+            </div>
 
-            <label for="nit">NIT:</label>
-            <input type="text" id="nit" name="nit" value="${param.nit}" required><br>
+            <div class="mb-3">
+                <!-- Campo para el NIT -->
+                <label for="nit" class="form-label">NIT:</label>
+                <input type="text" class="form-control" id="nit" name="nit" value="${param.nit}" required>
+            </div>
 
-            <!-- Campo para seleccionar el cliente -->
-            <label for="idCliente">ID Cliente:</label>
-            <input type="text" id="idCliente" name="idCliente" value="${param.ID_Cliente}" required><br>
+            <div class="mb-3">
+                <!-- Campo para el ID del Cliente -->
+                <label for="idCliente" class="form-label">ID Cliente:</label>
+                <input type="text" class="form-control" id="idCliente" name="idCliente" value="${param.ID_Cliente}" required>
+            </div>
 
-            <button type="submit">Guardar Cambios</button>
+            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
         </form>
     </div>
 
-    <!-- Botón de regreso -->
-    <button onclick="regresar()">Regresar</button>
-     <!-- JavaScript al final de la página -->
+ 
+    <!-- Enlaces a Bootstrap JS y Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <!-- JavaScript al final de la página -->
     <script>
         function regresar() {
-        // Utiliza window.history para retroceder una página en el historial del navegador
-        window.history.back();
+            // Utiliza window.history para retroceder una página en el historial del navegador
+            window.history.back();
         }
     </script>
+       <!-- Botón de regreso -->
+    <a href="#" class="btn btn-secondary ms-3" onclick="regresar()">Regresar</a>
 </body>
 
 </html>
