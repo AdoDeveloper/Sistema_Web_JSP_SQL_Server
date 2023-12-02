@@ -24,9 +24,15 @@
                 <input type="text" name="cargo" id="cargo" required /><br><br>                
                 <input type="submit" value="Registrar" onclick="return confirm('¿Desea registrar el cargo?')" /><br><br>
             </div><br>
-            <div>
-                <a href="/SistemaWeb/?accion=GestionarCargos">Gestion Cargos</a>
-            </div>            
+                        <!-- Botón de regreso -->
+    <button onclick="regresar()">Regresar</button>
+    <!-- JavaScript al final de la página -->
+    <script>
+        function regresar() {
+        // Utiliza window.history para retroceder una página en el historial del navegador
+        window.history.back();
+        }
+    </script>            
         </form>
     </body>
 </html>

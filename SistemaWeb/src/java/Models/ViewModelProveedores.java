@@ -13,6 +13,7 @@ public class ViewModelProveedores {
     private String nombreProveedor;
     private String telefonoProveedor;
     private int ID_Direccion;
+    private String direccionCompleta;
 
     public int getID_Proveedor() {
         return ID_Proveedor;
@@ -44,6 +45,14 @@ public class ViewModelProveedores {
 
     public void setID_Direccion(int ID_Direccion) {
         this.ID_Direccion = ID_Direccion;
+    }
+
+    public String getDireccionCompleta() {
+        return direccionCompleta;
+    }
+
+    public void setDireccionCompleta(String direccionCompleta) {
+        this.direccionCompleta = direccionCompleta;
     }
 
 }

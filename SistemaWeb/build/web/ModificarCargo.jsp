@@ -16,9 +16,16 @@
                 <input type="text" name="cargo" id="cargo" value="${param.cargo}" required /><br><br>        
                 <input type="submit" value="Modificar" onclick="return confirm('¿Desea modificar el cargo?')" /><br><br> 
             </div>
-            <div>
-                <a href="/SistemaWeb/?accion=GestionarCargos">Regresar</a><br><br>
-            </div>             
+                       
         </form>
+                            <!-- Botón de regreso -->
+    <button onclick="regresar()">Regresar</button>
+    <!-- JavaScript al final de la página -->
+    <script>
+        function regresar() {
+        // Utiliza window.history para retroceder una página en el historial del navegador
+        window.history.back();
+        }
+    </script>
     </body>
 </html>

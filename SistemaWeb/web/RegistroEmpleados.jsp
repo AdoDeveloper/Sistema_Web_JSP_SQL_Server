@@ -70,8 +70,16 @@
                 <br>
                 <input type="submit" value="Registrar" onclick="return confirm('¿Desea registrar el empleado?')" />
                 <input type="button" value="Limpiar" onclick="limpiarFormulario()" />
-                <button type="button" onclick="location.href = '/SistemaWeb/?accion=GestionEmpleados'">Gestionar empleados</button> 
-        </form>
+          </form>
+                    <!-- Botón de regreso -->
+    <button onclick="regresar()">Regresar</button>
+    <!-- JavaScript al final de la página -->
+    <script>
+        function regresar() {
+        // Utiliza window.history para retroceder una página en el historial del navegador
+        window.history.back();
+        }
+    </script>
     </body>
 </html>
 <script>
@@ -80,7 +88,7 @@
     }
 
     function agregarDireccion() {
-        window.open('/SistemaWeb/?accion=AgregarDireccion', '_blank', 'width=600, height=600, top=100, left=100, resizable=yes, scrollbars=yes');
+        window.open('/SistemaWeb/?accion=RegistroDireccion', '_blank', 'width=600, height=600, top=100, left=100, resizable=yes, scrollbars=yes');
     }
 
     function limpiarFormulario() {

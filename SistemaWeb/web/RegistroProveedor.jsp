@@ -25,20 +25,10 @@
         <h1>Agregar nuevo proveedor</h1>
             
         <form method="POST" action="/SistemaWeb/ServletPrincipal?accion=RegistroProveedor">
-
-
-                <!-- El ID de los empleados es autoincrementable -->
-                <label>ID_Proveedor:</label>
-                <input type="text" name="ID_Proveedor" id="ID_Proveedor" required /><br>
                 <label>Nombre:</label>
                 <input type="text" name="nombreProveedor" id="nombreProveedor" required /><br>
                 <label>Telefono:</label>
-                <input type="text" name="telefonoProveedor" id="telefonoProveedor" required /><br>
-                <label>ID_Direccion:</label>
-                <input type="text" name="ID_Direccion" id="ID_Direccion" required /><br>
-               
-                
-                       
+                <input type="text" name="telefonoProveedor" id="telefonoProveedor" required /><br>                       
                 <label>Dirección:</label>
                 <select name="ID_Direccion" id="ID_Direccion" required>
                     <option value="-1" selected>Seleccione una opción</option>
@@ -51,12 +41,22 @@
                 <button type="button" onclick="agregarDireccion()">Pre-registrar dirección</button>
                 
                 
-                
+                <input type="button" value="Limpiar" onclick="limpiarFormulario()" />
                 <br>
                 <input type="submit" value="Registrar" onclick="return confirm('¿Desea registrar el proveedor?')" />
-                <input type="button" value="Limpiar" onclick="limpiarFormulario()" />
-                <button type="button" onclick="location.href = '/SistemaWeb/?accion=GestionProveedores'">Gestionar proveedor</button> 
-        </form>
+            </form>
+         
+            <button type="button" onclick="location.href = '/SistemaWeb/ServletPrincipal?accion=GestionProveedores'">Gestionar Proveedores</button> 
+
+                    <!-- Botón de regreso -->
+            <button onclick="regresar()">Regresar</button>
+            <!-- JavaScript al final de la página -->
+            <script>
+                function regresar() {
+                    // Utiliza window.history para retroceder una página en el historial del navegador
+                    window.history.back();
+                }
+            </script>   
     </body>
 </html>
 <script>
