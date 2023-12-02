@@ -1028,9 +1028,74 @@ public ViewModelFacturas obtenerDetallesFacturaPorVenta(int idVenta) {
     }
 }
 
+public void eliminarVenta(HttpServletRequest request, HttpServletResponse response) {
+    int idVenta = Integer.parseInt(request.getParameter("id_venta"));
 
+    Connection conn = null;
+    PreparedStatement pstmtVentas = null;
+    PreparedStatement pstmtDetalleVentas = null;
+    PreparedStatement pstmtFacturas = null;
 
+    try {
+        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        conn = DriverManager.getConnection(url);
+        conn.setAutoCommit(false);
 
+        // Eliminar de la tabla Facturas
+        String deleteFacturas = "DELETE FROM Facturas WHERE ID_Venta = ?";
+        pstmtFacturas = conn.prepareStatement(deleteFacturas);
+        pstmtFacturas.setInt(1, idVenta);
+        int registrosFacturas = pstmtFacturas.executeUpdate();
+
+        // Eliminar de la tabla Detalle_Ventas
+        String deleteDetalleVentas = "DELETE FROM Detalle_Ventas WHERE ID_Venta = ?";
+        pstmtDetalleVentas = conn.prepareStatement(deleteDetalleVentas);
+        pstmtDetalleVentas.setInt(1, idVenta);
+        int registrosDetalleVentas = pstmtDetalleVentas.executeUpdate();
+
+        // Eliminar de la tabla Ventas
+        String deleteVentas = "DELETE FROM Ventas WHERE ID_Venta = ?";
+        pstmtVentas = conn.prepareStatement(deleteVentas);
+        pstmtVentas.setInt(1, idVenta);
+        int registrosVentas = pstmtVentas.executeUpdate();
+
+        if (registrosVentas > 0 && registrosDetalleVentas > 0 && registrosFacturas > 0) {
+            conn.commit();
+            request.getSession().setAttribute("exito", true);
+        } else {
+            conn.rollback();
+            request.getSession().setAttribute("exito", false);
+        }
+
+    } catch (ClassNotFoundException | SQLException e) {
+        e.printStackTrace();
+        try {
+            if (conn != null) {
+                conn.rollback();
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        // Manejar errores y redirigir o mostrar mensajes al usuario según sea necesario
+    } finally {
+        try {
+            if (pstmtVentas != null) {
+                pstmtVentas.close();
+            }
+            if (pstmtDetalleVentas != null) {
+                pstmtDetalleVentas.close();
+            }
+            if (pstmtFacturas != null) {
+                pstmtFacturas.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -1234,8 +1299,13 @@ public ViewModelFacturas obtenerDetallesFacturaPorVenta(int idVenta) {
             modificarVenta(request, response);
             System.out.print("pasa al llamado");
             response.sendRedirect(request.getContextPath() + "/ServletPrincipal?accion=GestionVentas");
+        } else if (accion.equals("EliminarFactura")){
+            System.out.print("entra al metedo");
+            eliminarVenta(request, response);
+            System.out.print("pasa al llamado");
+            response.sendRedirect(request.getContextPath() + "/ServletPrincipal?accion=GestionVentas");
         }
-    }
+    }   
     
 
     /**
