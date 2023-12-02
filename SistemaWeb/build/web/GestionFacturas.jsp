@@ -121,9 +121,8 @@
             
   
   
-    <!-- Botón para regresar a GestionVentas.jsp -->
-    <a href="/SistemaWeb?accion=GestionVentas" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Regresar a GestionVentas</a>
-    <!-- Botón para modificar la factura -->
+           <!-- Botón de regreso -->
+    <button onclick="regresar()">Regresar</button> <!-- Botón para modificar la factura -->
     <form method="post" action="/SistemaWeb/ModificarFactura.jsp">
         <!-- Campos ocultos con la información a enviar -->
         <input type="hidden" name="id_venta" value="${detallesFactura.id_venta}" />
@@ -162,6 +161,15 @@
 
 
     </div>
+            <!-- Botón de regreso -->
+    <button onclick="regresar()">Regresar</button>
+     <!-- JavaScript al final de la página -->
+    <script>
+        function regresar() {
+        // Utiliza window.history para retroceder una página en el historial del navegador
+        window.history.back();
+        }
+    </script>
     <script src="https://cdn.jsdelivr.net/jsbarcode/3.11.0/JsBarcode.all.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
