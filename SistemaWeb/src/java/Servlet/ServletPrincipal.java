@@ -1375,6 +1375,62 @@ public class ServletPrincipal extends HttpServlet {
         }
     }
 
+    //Funciones de actualizacion de registros (UPDATE)
+    public void modificarProveedor(HttpServletRequest request, HttpServletResponse response) {
+        //CAPTURA DE VARIABLES
+        String ID_Proveedor = request.getParameter("ID_Proveedor");
+        String nombreProveedor = request.getParameter("nombreProveedor");
+        String telefonoProveedor = request.getParameter("telefonoProveedor");
+        String ID_Direccion = request.getParameter("ID_Direccion");
+
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            try (Connection conn = DriverManager.getConnection(url)) {
+                request.setAttribute("mensaje_conexion", "Ok!");
+
+                String sql = "update Empleados set "
+                        + "nombreProveedor='" + nombreProveedor + "', "
+                        + "nombreProveedor='" + nombreProveedor + "', "
+                        + "telefonoProveedor='" + telefonoProveedor + "', "
+                        + "ID_Direccion='" + ID_Direccion + "' "
+                        + "where ID_Proveedor='" + ID_Proveedor + "'";
+
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+                int registros = pstmt.executeUpdate();
+                if (registros > 0) {
+                    request.getSession().setAttribute("exito", true);
+                } else {
+                    request.getSession().setAttribute("exito", false);
+                }
+            }
+        } catch (SQLException | ClassNotFoundException ex) {
+            request.getSession().setAttribute("exito", false);
+            ex.printStackTrace();
+        }
+    }
+
+    //Funciones de eliminacion de registros (DELETE)
+    public void eliminarProveedor(HttpServletRequest request, HttpServletResponse response) {
+        String ID_Proveedor = request.getParameter("ID_Proveedor");
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            try (Connection conn = DriverManager.getConnection(url)) {
+                request.setAttribute("mensaje_conexion", "Ok!");
+                String sql = "delete from Proveedores where ID_Proveedor='" + ID_Proveedor + "'";
+                PreparedStatement pstmt = conn.prepareStatement(sql);
+                int registros = pstmt.executeUpdate();
+                if (registros > 0) {
+                    request.getSession().setAttribute("exito", true);
+                } else {
+                    request.getSession().setAttribute("exito", false);
+                }
+            }
+        } catch (SQLException | ClassNotFoundException ex) {
+            request.getSession().setAttribute("exito", false);
+            ex.printStackTrace();
+        }
+    }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -1401,6 +1457,11 @@ public class ServletPrincipal extends HttpServlet {
         } else if (accion.equals("GestionPedidos")) {
             mostrarPedido(request, response);
             request.getRequestDispatcher("GestionPedidos.jsp").forward(request, response);
+
+            //MANDAR A LLAMAR GESTION PROVEEDORES
+        } else if (accion.equals("GestionProveedores")) {
+            mostrarPedido(request, response);
+            request.getRequestDispatcher("GestionProveedores.jsp").forward(request, response);
 
         } else if (accion.equals("RegistroProductos")) {
             request.getRequestDispatcher("RegistroProductos.jsp").forward(request, response);
@@ -1431,6 +1492,15 @@ public class ServletPrincipal extends HttpServlet {
         } else if (accion.equals("RegistroPedidos")) {
             mostrarProveedor(request, response);
             mostrarProductos(request, response);
+            if (request.getSession().getAttribute("exito") != null) {
+                request.setAttribute("exito", request.getSession().getAttribute("exito"));
+                request.getSession().removeAttribute("exito");
+            }
+            request.getRequestDispatcher("RegistroPedidos.jsp").forward(request, response);
+            //PROVEEDORES
+        } else if (accion.equals("RegistroProveedor")) {
+        
+            mostrarDirecciones(request, response);
             if (request.getSession().getAttribute("exito") != null) {
                 request.setAttribute("exito", request.getSession().getAttribute("exito"));
                 request.getSession().removeAttribute("exito");
@@ -1548,13 +1618,23 @@ public class ServletPrincipal extends HttpServlet {
         } else if (accion.equals("EliminarEmpleado")) {
             eliminarEmpleado(request, response);
             response.sendRedirect(request.getContextPath() + "/ServletPrincipal?accion=GestionEmpleados");
-          //ELIMINAR PEDIDO
-         } else if (accion.equals("EliminarPedido")) {
+            //ELIMINAR PEDIDO
+        } else if (accion.equals("EliminarPedido")) {
             eliminarPedido(request, response);
             response.sendRedirect(request.getContextPath() + "/ServletPrincipal?accion=GestionPedidos");
+
+            //MODIFICAR PEDIDO
+        } else if (accion.equals("ModificarPedido")) {
+            modificarPedido(request, response);
+            response.sendRedirect(request.getContextPath() + "/ServletPrincipal?accion=GestionPedidos");
             
-         //MODIFICAR PEDIDO
-         } else if (accion.equals("ModificarPedido")) {
+             //ELIMINAR PROVEEDOR
+        } else if (accion.equals("EliminarProveedor")) {
+            eliminarPedido(request, response);
+            response.sendRedirect(request.getContextPath() + "/ServletPrincipal?accion=GestionPedidos");
+
+            //MODIFICAR PROVEEDOR
+        } else if (accion.equals("ModificarProveedor")) {
             modificarPedido(request, response);
             response.sendRedirect(request.getContextPath() + "/ServletPrincipal?accion=GestionPedidos");
         } else if (accion.equals("AgregarCargo")) {
