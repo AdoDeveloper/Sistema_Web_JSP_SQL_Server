@@ -1,14 +1,18 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="java.util.ArrayList" %>
-
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Gestión de Ventas</title>
+    <!-- Enlace a Bootstrap CSS --> 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <style>
-        /* Estilo para el contenedor del pop-up */
+        body {
+            padding: 20px;
+        }
+
         .popup-container {
             display: none;
             position: fixed;
@@ -21,7 +25,6 @@
             z-index: 1;
         }
 
-        /* Estilo para el fondo oscuro */
         .overlay {
             display: none;
             position: fixed;
@@ -32,13 +35,18 @@
             background-color: rgba(0, 0, 0, 0.5);
             z-index: 0;
         }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+        }
     </style>
 </head>
 <body>
     <h1>Gestión de Ventas</h1>
     <h2>Listado de Ventas</h2><br>
-    <a href="/SistemaWeb?accion=RegistroVentas">Agregar venta</a><br><br>
-    <table border="1">
+    <a href="/SistemaWeb?accion=RegistroVentas" class="btn btn-primary">Agregar venta</a><br><br>
+    <table class="table table-bordered">
         <thead>
             <tr>
                 <th>ID Venta</th>
@@ -51,38 +59,37 @@
         <tbody>
             <c:forEach items="${listaVentas}" var="venta">
                 <tr>
-                    <td><c:out value="${venta.ID_Venta}" /></td>
-                    <td><c:out value="${venta.fechaVenta}" /></td>
-                    <td><c:out value="${venta.subtotal}" /></td>
-                    <td><c:out value="${venta.total}" /></td>
+                    <td>${venta.ID_Venta}</td>
+                    <td>${venta.fechaVenta}</td>
+                    <td>${venta.subtotal}</td>
+                    <td>${venta.total}</td>
                     <td>
-                        <!-- Ver detalles -->
-                        <button onclick="mostrarDetallesVenta(
-                            '${venta.ID_Venta}',
-                            '${venta.fechaVenta}',
-                            '${venta.subtotal}',
-                            '${venta.total}',
-                            '${venta.nombreProducto}',
-                            '${venta.precioUnitario}',
-                            '${venta.cantidadProducto}',
-                            '${venta.nombreCliente}'
-                        )">Detalles</button>
-                        
+                        <!-- Detalles y Ver Factura en un div flexible -->
+                        <div class="d-flex">
+                            <button class="btn btn-info me-2" onclick="mostrarDetallesVenta(
+                                '${venta.ID_Venta}',
+                                '${venta.fechaVenta}',
+                                '${venta.subtotal}',
+                                '${venta.total}',
+                                '${venta.nombreProducto}',
+                                '${venta.precioUnitario}',
+                                '${venta.cantidadProducto}',
+                                '${venta.nombreCliente}'
+                            )">Detalles</button>
 
-                        <form method="GET" action="/SistemaWeb?">
-                            <input type="hidden" name="accion" value="verFactura" />
-                            <input type="hidden" name="ID_Venta" value="${venta.ID_Venta}" />
-                            <input type="submit" value="Ver Factura" />
-                        </form>
-
-
+                            <form method="GET" action="/SistemaWeb?">
+                                <input type="hidden" name="accion" value="verFactura" />
+                                <input type="hidden" name="ID_Venta" value="${venta.ID_Venta}" />
+                                <button type="submit" class="btn btn-secondary">Ver Factura</button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
             </c:forEach>
         </tbody>
     </table>
 
-   <!-- Detalles de la Venta -->
+    <!-- Detalles de la Venta -->
     <div class="overlay" id="overlay"></div>
     <div class="popup-container" id="popup">
         <label>ID Venta: <span id="ID_Venta"></span></label><br>
@@ -95,19 +102,20 @@
         <span id="cantidadProducto"></span><br>
         <label>Nombre del Cliente: <span id="nombreCliente"></span></label><br>
         <br>
-        <button onclick="cerrarPopup()">Cerrar</button>
+        <button class="btn btn-secondary" onclick="cerrarPopup()">Cerrar</button>
     </div>
-    
-    <!-- Botón de regreso -->
-    <button onclick="regresar()">Regresar</button>
 
-    <!-- JavaScript al final de la página -->
+    <!-- Botón de regreso -->
+    <a href="#" class="btn btn-secondary" onclick="regresar()">Regresar</a>
+
+    <!-- Enlace a Bootstrap JS y Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script>
         function regresar() {
-        // Utiliza window.history para retroceder una página en el historial del navegador
-        window.history.back();
+            // Utiliza window.history para retroceder una página en el historial del navegador
+            window.history.back();
         }
-        
+
         function cerrarPopup() {
             var popup = document.getElementById('popup');
             var overlay = document.getElementById('overlay');
